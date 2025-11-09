@@ -39,19 +39,6 @@ The project is organized into clear packages following Clean Architecture:
 - **di**: Hilt dependency injection modules (NetworkModule, AppModule)
 - **navigation**: Compose navigation graph setup
 
-## Getting Started
-
-### Requirements
-- Android Studio Hedgehog or newer
-- Minimum SDK: 24
-- Target SDK: 34
-
-### Run the App
-1. Clone the repository: `git clone https://github.com/YOUR_USERNAME/truecaller-task.git`
-2. Open in Android Studio
-3. Sync Gradle files
-4. Run on device or emulator
-
 ## Key Implementation Highlights
 
 - **Parallel processing**: Three tasks run simultaneously using Kotlin coroutines for optimal performance
