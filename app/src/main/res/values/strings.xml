@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!-- App Name -->
+<string name="app_name">True caller assignment</string>
+
+<!-- Main Screen -->
+<string name="main_title">Truecaller Task</string>
+<string name="main_subtitle">Web Content Analysis</string>
+<string name="button_load_content">Load and Process Content</string>
+<string name="button_loading">Loading…</string>
+
+<!-- Task Titles -->
+<string name="task1_title">Task 1: 15th Character</string>
+<string name="task2_title">Task 2: Every 15th Character</string>
+<string name="task3_title">Task 3: Word Count</string>
+
+<!-- Task 1 Results -->
+<string name="task1_content_too_short">Content too short</string>
+
+<!-- Task 2 Results -->
+<string name="task2_found_characters">Found %1$d characters</string>
+<string name="task2_total_scroll">Total: %1$d characters (scroll to see all)</string>
+
+<!-- Task 3 Results -->
+<string name="task3_total_words">Total unique words:</string>
+<string name="task3_all_words_title">All words (sorted by frequency):</string>
+<string name="task3_showing_all">Showing all %1$d unique words (scroll to see more)</string>
+
+<!-- States -->
+<string name="state_processing">Processing…</string>
+<string name="state_waiting">Waiting to start…</string>
+
+<!-- Error -->
+<string name="error_title">Error</string>
+
+<!-- Content Descriptions (for accessibility) -->
+<string name="cd_complete_icon">Task completed</string>
+<string name="cd_error_icon">Error occurred</string>
+<string name="cd_download_icon">Download content</string>
+</resources>
