@@ -27,9 +27,7 @@ import com.truecaller.task.R
 import kotlin.collections.component1
 import kotlin.collections.component2
 
-/**
- * Task 3: Word frequency display
- */
+
 @Composable
 fun WordFrequencyContent(wordCounts: Map<String, Int>) {
     Surface(

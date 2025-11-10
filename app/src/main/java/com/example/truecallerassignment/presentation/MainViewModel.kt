@@ -20,12 +20,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * ViewModel following MVVM pattern with UDF
- * Manages UI state and business logic
- *
- * State flows down to UI, events flow up from UI
- */
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val fetchWebContentUseCase: FetchWebContentUseCase,
@@ -42,23 +36,14 @@ class MainViewModel @Inject constructor(
     // Private mutable state
     private val _uiState = MutableStateFlow(MainUiState())
 
-    // Public immutable state exposed to UI
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
-    /**
-     * Handle UI events
-     * Single entry point for all user interactions
-     */
     fun onEvent(event: MainUiEvent) {
         when (event) {
             is MainUiEvent.LoadContent -> loadContentAndProcessTasks()
         }
     }
 
-    /**
-     * Loads web content and executes all three tasks in parallel
-     * Each task updates the UI as soon as it completes
-     */
     private fun loadContentAndProcessTasks() {
         viewModelScope.launch {
             // Set initial loading state
@@ -68,24 +53,16 @@ class MainViewModel @Inject constructor(
             when (val result = fetchWebContentUseCase(TARGET_URL)) {
                 is NetworkResult.Success -> {
                     val content = result.data
+                    _uiState.update { it.copy(isLoading = false, error = null) }
 
-                    // Update loading state - content fetched
-                    _uiState.update { it.copy(isLoading = false) }
-
-                    // Execute all three tasks in parallel
-                    // Each task will update UI state independently when complete
-
-                    // Task 1: Find 15th character
                     launch {
                         getCharacterAtPosition(content)
                     }
 
-                    // Task 2: Find every 15th character
                     launch {
                         getEveryFifteenthCharacters(content)
                     }
 
-                    // Task 3: Count word occurrences
                     launch {
                         getWordCountOccurences(content)
                     }
@@ -112,10 +89,10 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getEveryFifteenthCharacters(content: String) {
-        val extractedCharacters = extractCharactersByIntervalUseCase(content, 15)
+        val extractedCharacters = extractCharactersByIntervalUseCase(content, 15, 10)
         val taskResult = CharactersListResult(
             title = R.string.task2_title,
-            characters = extractedCharacters
+            chunkedCharacters = extractedCharacters
         )
         updateUiStateTasks(taskResult)
     }

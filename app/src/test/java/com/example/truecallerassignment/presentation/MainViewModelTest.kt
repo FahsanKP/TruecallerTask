@@ -62,7 +62,13 @@ class MainViewModelTest {
 
         coEvery { fetchWebContentUseCase.invoke(any()) } returns NetworkResult.Success(data = fakeContent)
         coEvery { getCharacterAtPositionUseCase.invoke(fakeContent, 14) } returns 't'
-        coEvery { extractCharactersByIntervalUseCase.invoke(fakeContent, 15) } returns listOf('t')
+        coEvery {
+            extractCharactersByIntervalUseCase.invoke(
+                fakeContent,
+                15,
+                10
+            )
+        } returns listOf(listOf('t'))
         coEvery { countWordOccurrencesUseCase.invoke(fakeContent) } returns mapOf("this" to 1)
 
         viewModel.onEvent(MainUiEvent.LoadContent)
@@ -76,7 +82,9 @@ class MainViewModelTest {
 
         val taskResults = uiState.taskResults
         assert(taskResults.any { it is CharacterResult && it.character == 't' })
-        assert(taskResults.any { it is CharactersListResult && it.characters.contains('t') })
+        assert(taskResults.any {
+            it is CharactersListResult && it.chunkedCharacters.get(0).contains('t')
+        })
         assert(taskResults.any { it is WordFrequencyResult && it.wordCounts["this"] == 1 })
     }
 
@@ -102,8 +110,16 @@ class MainViewModelTest {
         val sampleContent = "The quick brown fox jumps over the lazy dog"
         coEvery { fetchWebContentUseCase(any()) } returns NetworkResult.Success(sampleContent)
         coEvery { getCharacterAtPositionUseCase(sampleContent, 14) } returns 'o'
-        coEvery { extractCharactersByIntervalUseCase(sampleContent, 15) } returns listOf('o', 'l')
-        coEvery { countWordOccurrencesUseCase(sampleContent) } returns mapOf("the" to 2, "quick" to 1)
+        coEvery { extractCharactersByIntervalUseCase(sampleContent, 15, 10) } returns listOf(
+            listOf(
+                'o',
+                'l'
+            )
+        )
+        coEvery { countWordOccurrencesUseCase(sampleContent) } returns mapOf(
+            "the" to 2,
+            "quick" to 1
+        )
 
         // Trigger the event
         viewModel.onEvent(MainUiEvent.LoadContent)
@@ -114,8 +130,20 @@ class MainViewModelTest {
 
         // Assert each result is present as expected
         assertTrue(taskResults.any { it is CharacterResult && it.character == 'o' })
-        assertTrue(taskResults.any { it is CharactersListResult && it.characters == listOf('o', 'l') })
-        assertTrue(taskResults.any { it is WordFrequencyResult && it.wordCounts == mapOf("the" to 2, "quick" to 1) })
+        assertTrue(taskResults.any {
+            it is CharactersListResult && it.chunkedCharacters == listOf(
+                listOf(
+                    'o',
+                    'l'
+                )
+            )
+        })
+        assertTrue(taskResults.any {
+            it is WordFrequencyResult && it.wordCounts == mapOf(
+                "the" to 2,
+                "quick" to 1
+            )
+        })
         assertEquals(3, taskResults.size)
     }
 }

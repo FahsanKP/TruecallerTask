@@ -96,7 +96,7 @@ private fun TaskResultList(taskResults: List<TaskResult>) {
             ) {
                 when (state) {
                     is CharacterResult -> state.character?.let { CharacterContent(it) }
-                    is CharactersListResult -> CharactersListContent(state.characters)
+                    is CharactersListResult -> CharactersListContent(state.chunkedCharacters)
                     is WordFrequencyResult -> WordFrequencyContent(state.wordCounts)
                 }
             }

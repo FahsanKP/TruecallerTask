@@ -1,13 +1,7 @@
 package com.example.truecallerassignment.domain.usecase
 
-import com.example.truecallerassignment.domain.model.TaskResult
 import javax.inject.Inject
 
-/**
- * Use case for Task 3: Count word occurrences
- * Time Complexity: O(n) where n is the number of words
- * Space Complexity: O(m) where m is the number of unique words
- */
 class CountWordOccurrencesUseCase @Inject constructor() {
 
     operator fun invoke(content: String): Map<String, Int> {

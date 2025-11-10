@@ -80,14 +80,10 @@ internal class NetworkResultCall<T>(
 
         return NetworkResult.Error(
             message = message,
-            type = type,
-            exception = throwable
+            type = type
         )
     }
 
-    /**
-     * Maps HTTP error responses to NetworkResult.Error
-     */
     private fun handleHttpError(response: Response<T>): NetworkResult.Error {
         val errorMessage = response.errorBody()?.string() ?: response.message()
         val errorType = when (response.code()) {

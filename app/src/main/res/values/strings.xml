@@ -19,16 +19,9 @@
 
 <!-- Task 2 Results -->
 <string name="task2_found_characters">Found %1$d characters</string>
-<string name="task2_total_scroll">Total: %1$d characters (scroll to see all)</string>
 
 <!-- Task 3 Results -->
 <string name="task3_total_words">Total unique words:</string>
-<string name="task3_all_words_title">All words (sorted by frequency):</string>
-<string name="task3_showing_all">Showing all %1$d unique words (scroll to see more)</string>
-
-<!-- States -->
-<string name="state_processing">Processing…</string>
-<string name="state_waiting">Waiting to start…</string>
 
 <!-- Error -->
 <string name="error_title">Error</string>

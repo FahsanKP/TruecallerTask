@@ -8,9 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
-/**
- * Task 1: Single character display
- */
+
 @Composable
 fun CharacterContent(character: Char) {
     Surface(

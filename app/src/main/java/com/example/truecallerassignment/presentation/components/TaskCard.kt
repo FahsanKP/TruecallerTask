@@ -7,20 +7,19 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.truecaller.task.R
 
-/**
- * Generic reusable card for displaying task results
- * Uses Slot API pattern for flexible content
- */
+
 @Composable
 fun TaskCard(
     title: String,
     isLoading: Boolean,
     isCompleted: Boolean,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    taskResult: @Composable () -> Unit
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -47,7 +46,7 @@ fun TaskCard(
                 if (isCompleted && !isLoading) {
                     Icon(
                         imageVector = Icons.Default.CheckCircle,
-                        contentDescription = "Complete",
+                        contentDescription = stringResource(R.string.cd_complete_icon),
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(20.dp)
                     )
@@ -55,9 +54,7 @@ fun TaskCard(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-
-            // Content - unique for each task (passed as lambda)
-            content()
+            taskResult()
         }
     }
 }
