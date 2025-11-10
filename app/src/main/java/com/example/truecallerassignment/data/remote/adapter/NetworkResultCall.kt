@@ -46,12 +46,6 @@ internal class NetworkResultCall<T>(
         })
     }
 
-    /**
-     * Maps Throwable exceptions to NetworkResult.Error with appropriate error types and messages
-     *
-     * @param throwable The exception thrown during network request
-     * @return NetworkResult.Error with user-friendly message and error type
-     */
     private fun mapThrowableToNetworkError(throwable: Throwable): NetworkResult.Error {
         val message: String
         val type: ErrorType

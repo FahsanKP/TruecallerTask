@@ -60,7 +60,7 @@ class MainViewModelTest {
     fun `loadContentAndProcessTasks success updates uiState with all results`() = runTest {
         val fakeContent = "this is some test content"
 
-        coEvery { fetchWebContentUseCase.invoke(any()) } returns NetworkResult.Success(data = fakeContent)
+        coEvery { fetchWebContentUseCase.invoke() } returns NetworkResult.Success(data = fakeContent)
         coEvery { getCharacterAtPositionUseCase.invoke(fakeContent, 14) } returns 't'
         coEvery {
             extractCharactersByIntervalUseCase.invoke(
@@ -83,7 +83,7 @@ class MainViewModelTest {
         val taskResults = uiState.taskResults
         assert(taskResults.any { it is CharacterResult && it.character == 't' })
         assert(taskResults.any {
-            it is CharactersListResult && it.chunkedCharacters.get(0).contains('t')
+            it is CharactersListResult && it.chunkedCharacters[0].contains('t')
         })
         assert(taskResults.any { it is WordFrequencyResult && it.wordCounts["this"] == 1 })
     }
@@ -91,7 +91,7 @@ class MainViewModelTest {
     @Test
     fun `loadContentAndProcessTasks failure updates uiState with error`() = runTest {
         val errorMessage = "Error fetching content"
-        coEvery { fetchWebContentUseCase.invoke(any()) } returns NetworkResult.Error(errorMessage)
+        coEvery { fetchWebContentUseCase.invoke() } returns NetworkResult.Error(errorMessage)
 
         viewModel.onEvent(MainUiEvent.LoadContent)
 
@@ -108,7 +108,7 @@ class MainViewModelTest {
     fun `loadContentAndProcessTasks completes all tasks and updates state`() = runTest {
         // Prepare mocks
         val sampleContent = "The quick brown fox jumps over the lazy dog"
-        coEvery { fetchWebContentUseCase(any()) } returns NetworkResult.Success(sampleContent)
+        coEvery { fetchWebContentUseCase() } returns NetworkResult.Success(sampleContent)
         coEvery { getCharacterAtPositionUseCase(sampleContent, 14) } returns 'o'
         coEvery { extractCharactersByIntervalUseCase(sampleContent, 15, 10) } returns listOf(
             listOf(

@@ -7,7 +7,7 @@ import javax.inject.Inject
 class FetchWebContentUseCase @Inject constructor(
     private val repository: WebContentRepository
 ) {
-    suspend operator fun invoke(url: String): NetworkResult<String> {
-        return repository.fetchWebContent(url)
+    suspend operator fun invoke(): NetworkResult<String> {
+        return repository.fetchWebContent()
     }
 }

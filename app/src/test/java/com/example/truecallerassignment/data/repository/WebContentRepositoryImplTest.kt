@@ -21,23 +21,21 @@ class WebContentRepositoryImplTest {
 
     @Test
     fun `fetchWebContent returns success result from api`() = runTest {
-        val url = "https://example.com"
         val expected = NetworkResult.Success("Test content")
 
-        coEvery { api.fetchWebContent(url) } returns expected
+        coEvery { api.fetchWebContent() } returns expected
 
-        val result = repository.fetchWebContent(url)
+        val result = repository.fetchWebContent()
         assertEquals(expected, result)
     }
 
     @Test
     fun `fetchWebContent returns error result from api`() = runTest {
-        val url = "https://example.com"
         val expected = NetworkResult.Error("Something went wrong")
 
-        coEvery { api.fetchWebContent(url) } returns expected
+        coEvery { api.fetchWebContent() } returns expected
 
-        val result = repository.fetchWebContent(url)
+        val result = repository.fetchWebContent()
         assertEquals(expected, result)
     }
 }

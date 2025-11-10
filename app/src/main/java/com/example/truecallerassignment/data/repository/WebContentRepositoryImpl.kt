@@ -11,9 +11,9 @@ class WebContentRepositoryImpl @Inject constructor(
     private val api: WebContentApi
 ) : WebContentRepository {
 
-    override suspend fun fetchWebContent(url: String): NetworkResult<String> {
+    override suspend fun fetchWebContent(): NetworkResult<String> {
         return withContext(Dispatchers.IO) {
-            api.fetchWebContent(url)
+            api.fetchWebContent()
         }
     }
 }

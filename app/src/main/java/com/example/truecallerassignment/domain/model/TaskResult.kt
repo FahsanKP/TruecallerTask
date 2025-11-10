@@ -2,9 +2,6 @@ package com.example.truecallerassignment.domain.model
 
 import androidx.annotation.StringRes
 
-/**
- * Sealed class representing the result of each task
- */
 sealed interface TaskResult {
     val title: Int
 }

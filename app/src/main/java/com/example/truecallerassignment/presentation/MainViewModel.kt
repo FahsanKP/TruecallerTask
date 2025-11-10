@@ -29,11 +29,6 @@ class MainViewModel @Inject constructor(
     private val countWordOccurrencesUseCase: CountWordOccurrencesUseCase
 ) : ViewModel() {
 
-    companion object {
-        private const val TARGET_URL =
-            "https://www.truecaller.com/blog/life-at-truecaller/life-as-an-android-engineer"
-    }
-
     // Private mutable state
     private val _uiState = MutableStateFlow(MainUiState())
 
@@ -51,7 +46,7 @@ class MainViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true) }
 
             // Fetch web content
-            when (val result = fetchWebContentUseCase(TARGET_URL)) {
+            when (val result = fetchWebContentUseCase()) {
                 is NetworkResult.Success -> {
                     val content = result.data
                     _uiState.update { it.copy(isLoading = false, error = null) }
