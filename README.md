@@ -25,7 +25,7 @@ The app follows Clean Architecture with three distinct layers:
 
 **Presentation Layer**: Jetpack Compose UI, ViewModels, and state management using UDF pattern
 
-**Domain Layer**: Business logic with use cases (FetchWebContent, Find15thCharacter, FindEvery15thCharacter, CountWordOccurrences), domain models, and repository interfaces
+**Domain Layer**: Business logic with use cases (FetchWebContent, GetCharacterAtPositionUseCase, ExtractCharactersByIntervalUseCase, CountWordOccurrencesUseCase), domain models, and repository interfaces
 
 **Data Layer**: Retrofit API implementation, repository implementations, and custom CallAdapter for centralized error handling
 
@@ -34,7 +34,7 @@ The app follows Clean Architecture with three distinct layers:
 The project is organized into clear packages following Clean Architecture:
 
 - **data**: Contains the network layer with Retrofit API interfaces, custom CallAdapter for error handling, and repository implementations
-- **domain**: Houses the business logic with use cases, domain models (WebContent, TaskResult), and repository interfaces
+- **domain**: Houses the business logic with use cases, domain model (TaskResult), and repository interfaces
 - **presentation**: Includes Jetpack Compose UI components, ViewModels, UI state management, and Material3 theme
 - **di**: Hilt dependency injection modules (NetworkModule, AppModule)
 - **navigation**: Compose navigation graph setup
