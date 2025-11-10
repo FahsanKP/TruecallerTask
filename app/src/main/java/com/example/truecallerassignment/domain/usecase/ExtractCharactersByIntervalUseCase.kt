@@ -4,7 +4,7 @@ import javax.inject.Inject
 
 class ExtractCharactersByIntervalUseCase @Inject constructor() {
 
-    operator fun invoke(content: String, interval: Int, elementsPerChunk: Int): List<List<Char>> {
+    suspend operator fun invoke(content: String, interval: Int, elementsPerChunk: Int): List<List<Char>> {
         val characters =  content
             .filterIndexed { index, _ -> (index + 1) % interval == 0 }
             .toList()

@@ -14,6 +14,8 @@ import com.example.truecallerassignment.domain.usecase.ExtractCharactersByInterv
 import com.truecaller.task.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -51,11 +53,13 @@ class MainViewModel @Inject constructor(
                     val content = result.data
                     _uiState.update { it.copy(isLoading = false, error = null) }
 
-                    launch { getCharacterAtPosition(content) }
+                    coroutineScope {
+                        async { getCharacterAtPosition(content) }
 
-                    launch { getEveryFifteenthCharacters(content) }
+                        async { getEveryFifteenthCharacters(content) }
 
-                    launch { getWordCountOccurences(content) }
+                        async { getWordCountOccurences(content) }
+                    }
                 }
 
                 is NetworkResult.Error -> {
@@ -69,7 +73,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun getWordCountOccurences(content: String) {
+    private suspend fun getWordCountOccurences(content: String) {
         val wordCount = countWordOccurrencesUseCase(content)
         val taskResult = WordFrequencyResult(
             title = R.string.task3_title,
@@ -78,7 +82,7 @@ class MainViewModel @Inject constructor(
         updateUiStateTasks(taskResult)
     }
 
-    private fun getEveryFifteenthCharacters(content: String) {
+    private suspend fun getEveryFifteenthCharacters(content: String) {
         val extractedCharacters = extractCharactersByIntervalUseCase(content, 15, 10)
         val taskResult = CharactersListResult(
             title = R.string.task2_title,
@@ -87,7 +91,7 @@ class MainViewModel @Inject constructor(
         updateUiStateTasks(taskResult)
     }
 
-    private fun getCharacterAtPosition(content: String) {
+    private suspend fun getCharacterAtPosition(content: String) {
         val charAtPosition =
             getCharacterAtPositionUseCase(content = content, position = 14)
         val taskResult = CharacterResult(

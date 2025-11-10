@@ -4,7 +4,7 @@ import javax.inject.Inject
 
 class CountWordOccurrencesUseCase @Inject constructor() {
 
-    operator fun invoke(content: String): Map<String, Int> {
+    suspend operator fun invoke(content: String): Map<String, Int> {
         // Split by whitespace characters and count occurrences (case insensitive)
         val wordCounts = content
             .split(Regex("\\s+")) // Split by any whitespace
