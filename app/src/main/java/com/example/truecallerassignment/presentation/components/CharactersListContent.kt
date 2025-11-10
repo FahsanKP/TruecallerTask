@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.truecaller.task.R
 
@@ -65,3 +66,15 @@ fun Char.visualize(): String =
         '\t' -> "\\t"     // Tab as "\\t"
         else -> this.toString()
     }
+
+
+@Preview(showBackground = true)
+@Composable
+fun CharactersListContentPreview() {
+    val sampleChunks = listOf(
+        listOf('H', 'e', 'l', 'l', 'o', '\n', 'W', 'o', 'r', 'l'),
+        listOf('d', '!', '\t', 'K', 'o', 't', 'l', 'i', 'n', '\n'),
+        listOf('C', 'o', 'm', 'p', 'o', 's', 'e')
+    )
+    CharactersListContent(chunkedCharacters = sampleChunks)
+}

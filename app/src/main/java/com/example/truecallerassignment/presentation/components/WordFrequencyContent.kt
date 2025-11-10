@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.truecaller.task.R
 import kotlin.collections.component1
@@ -75,8 +76,7 @@ fun WordFrequencyContent(wordCounts: Map<String, Int>) {
                     WordCountRow(
                         rank = index + 1,
                         word = word,
-                        count = count,
-                        isTopTen = index < 10
+                        count = count
                     )
                 }
             }
@@ -88,8 +88,7 @@ fun WordFrequencyContent(wordCounts: Map<String, Int>) {
 private fun WordCountRow(
     rank: Int,
     word: String,
-    count: Int,
-    isTopTen: Boolean
+    count: Int
 ) {
     Row(
         modifier = Modifier
@@ -103,28 +102,19 @@ private fun WordCountRow(
             modifier = Modifier.weight(1f)
         ) {
             // Rank badge
-            if (isTopTen) {
-                Surface(
-                    color = MaterialTheme.colorScheme.tertiary,
-                    shape = MaterialTheme.shapes.small,
-                    modifier = Modifier.size(24.dp)
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Text(
-                            text = "$rank",
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onTertiary
-                        )
-                    }
+            Surface(
+                color = MaterialTheme.colorScheme.tertiary,
+                shape = MaterialTheme.shapes.small,
+                modifier = Modifier.size(24.dp)
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Text(
+                        text = "$rank",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onTertiary
+                    )
                 }
-            } else {
-                Text(
-                    text = "•",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    modifier = Modifier.width(24.dp)
-                )
             }
 
             Spacer(modifier = Modifier.width(12.dp))
@@ -138,18 +128,31 @@ private fun WordCountRow(
 
         // Count badge
         Surface(
-            color = MaterialTheme.colorScheme.tertiary.copy(
-                alpha = if (isTopTen) 0.4f else 0.2f
-            ),
+            color = MaterialTheme.colorScheme.tertiary.copy(0.2f),
             shape = MaterialTheme.shapes.small
         ) {
             Text(
                 text = count.toString(),
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = if (isTopTen) FontWeight.Bold else FontWeight.Normal,
+                fontWeight =  FontWeight.Normal,
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
             )
         }
     }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun WordFrequencyContentPreview() {
+    val sampleWordCounts = mapOf(
+        "android" to 10,
+        "kotlin" to 7,
+        "compose" to 5,
+        "jetpack" to 3,
+        "ui" to 2,
+        "development" to 1
+    )
+    WordFrequencyContent(wordCounts = sampleWordCounts)
 }
