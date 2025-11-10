@@ -35,6 +35,9 @@ coroutines = "1.7.3"
 # Serialization
 kotlinxSerialization = "1.6.3"
 
+# Collections
+kotlinxCollectionsImmutable = "0.3.7"
+
 # Testing
 junit = "4.13.2"
 junitExt = "1.1.5"
@@ -70,6 +73,10 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 
 # Serialization
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
+# Collections
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
+
 
 # Retrofit
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }

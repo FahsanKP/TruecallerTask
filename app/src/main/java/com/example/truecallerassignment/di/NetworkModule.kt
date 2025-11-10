@@ -13,6 +13,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+private const val BASE_URL = "https://www.truecaller.com/"
+
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
@@ -36,7 +38,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://www.truecaller.com/") // Base URL
+            .baseUrl(BASE_URL) // Base URL
             .client(okHttpClient)
             .addConverterFactory(ScalarsConverterFactory.create())// For plain text
             .addCallAdapterFactory(NetworkResultCallAdapterFactory())

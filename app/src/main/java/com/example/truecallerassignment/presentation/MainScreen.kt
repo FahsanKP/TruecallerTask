@@ -26,6 +26,7 @@ import com.example.truecallerassignment.presentation.components.TaskCard
 import com.example.truecallerassignment.presentation.components.WordFrequencyContent
 import com.example.truecallerassignment.presentation.theme.TrueCallerAssignmentTheme
 import com.truecaller.task.R
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun MainScreen(
@@ -117,7 +118,7 @@ private fun TaskResultList(taskResults: List<TaskResult>) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainScreenContentPreview() {
-    val sampleTaskResults = listOf(CharacterResult(
+    val sampleTaskResults = persistentListOf(CharacterResult(
             title = R.string.task1_title, // e.g. "Task 1: 15th Character"
             character = 'X'
         ), CharactersListResult(

@@ -13,6 +13,7 @@ import com.example.truecallerassignment.domain.usecase.GetCharacterAtPositionUse
 import com.example.truecallerassignment.domain.usecase.ExtractCharactersByIntervalUseCase
 import com.truecaller.task.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -55,17 +56,11 @@ class MainViewModel @Inject constructor(
                     val content = result.data
                     _uiState.update { it.copy(isLoading = false, error = null) }
 
-                    launch {
-                        getCharacterAtPosition(content)
-                    }
+                    launch { getCharacterAtPosition(content) }
 
-                    launch {
-                        getEveryFifteenthCharacters(content)
-                    }
+                    launch { getEveryFifteenthCharacters(content) }
 
-                    launch {
-                        getWordCountOccurences(content)
-                    }
+                    launch { getWordCountOccurences(content) }
                 }
 
                 is NetworkResult.Error -> {
@@ -110,7 +105,7 @@ class MainViewModel @Inject constructor(
     private fun updateUiStateTasks(taskResult: TaskResult) {
         _uiState.update {
             it.copy(
-                taskResults = it.taskResults.plus(taskResult),
+                taskResults = (it.taskResults + taskResult).toImmutableList(),
             )
         }
     }
