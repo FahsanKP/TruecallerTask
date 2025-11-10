@@ -10,7 +10,7 @@ import javax.inject.Inject
  */
 class CountWordOccurrencesUseCase @Inject constructor() {
 
-    operator fun invoke(content: String): TaskResult.Task3Result {
+    operator fun invoke(content: String): Map<String, Int> {
         // Split by whitespace characters and count occurrences (case insensitive)
         val wordCounts = content
             .split(Regex("\\s+")) // Split by any whitespace
@@ -21,6 +21,6 @@ class CountWordOccurrencesUseCase @Inject constructor() {
             .sortedByDescending { it.second } // Sort by count descending
             .toMap() // Convert back to map
 
-        return TaskResult.Task3Result(wordCounts)
+        return wordCounts
     }
 }

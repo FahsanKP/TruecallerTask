@@ -9,10 +9,5 @@ import com.example.truecallerassignment.domain.model.TaskResult
 data class MainUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
-    val task1Result: TaskResult.Task1Result? = null,
-    val task2Result: TaskResult.Task2Result? = null,
-    val task3Result: TaskResult.Task3Result? = null,
-    val task1Loading: Boolean = false,
-    val task2Loading: Boolean = false,
-    val task3Loading: Boolean = false
+    val taskResults: List<TaskResult> = listOf(),
 )

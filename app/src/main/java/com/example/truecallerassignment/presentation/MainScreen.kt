@@ -13,9 +13,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.truecallerassignment.domain.model.CharacterResult
+import com.example.truecallerassignment.domain.model.CharactersListResult
+import com.example.truecallerassignment.domain.model.WordFrequencyResult
+import com.example.truecallerassignment.domain.model.TaskResult
+import com.example.truecallerassignment.presentation.components.CharacterContent
+import com.example.truecallerassignment.presentation.components.CharactersListContent
 import com.example.truecallerassignment.presentation.components.ErrorCard
 import com.example.truecallerassignment.presentation.components.LoadButton
-import com.example.truecallerassignment.presentation.components.TaskResultCard
+import com.example.truecallerassignment.presentation.components.TaskCard
+import com.example.truecallerassignment.presentation.components.WordFrequencyContent
 import com.truecaller.task.R
 
 @Composable
@@ -67,32 +74,35 @@ fun MainScreen(
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            TaskResultCard(
-                title = stringResource(R.string.task1_title),
-                result = uiState.task1Result,
-                isLoading = uiState.task1Loading
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            TaskResultCard(
-                title = stringResource(R.string.task2_title),
-                result = uiState.task2Result,
-                isLoading = uiState.task2Loading
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            TaskResultCard(
-                title = stringResource(R.string.task3_title),
-                result = uiState.task3Result,
-                isLoading = uiState.task3Loading
-            )
+            TaskResultList(uiState.taskResults)
 
             Spacer(modifier = Modifier.height(16.dp))
             Spacer(modifier = Modifier.navigationBarsPadding())
         }
     }
 }
+
+@Composable
+private fun TaskResultList(taskResults: List<TaskResult>) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        taskResults.forEach { state ->
+            TaskCard(
+                title = stringResource(state.title),
+                isLoading = false,
+                isCompleted = true,
+            ) {
+                when (state) {
+                    is CharacterResult -> state.character?.let { CharacterContent(it) }
+                    is CharactersListResult -> CharactersListContent(state.characters)
+                    is WordFrequencyResult -> WordFrequencyContent(state.wordCounts)
+                }
+            }
+        }
+    }
+}
+
 
 

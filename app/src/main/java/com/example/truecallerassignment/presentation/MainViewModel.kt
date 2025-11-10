@@ -3,10 +3,15 @@ package com.example.truecallerassignment.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.truecallerassignment.data.remote.NetworkResult
+import com.example.truecallerassignment.domain.model.CharacterResult
+import com.example.truecallerassignment.domain.model.CharactersListResult
+import com.example.truecallerassignment.domain.model.TaskResult
+import com.example.truecallerassignment.domain.model.WordFrequencyResult
 import com.example.truecallerassignment.domain.usecase.CountWordOccurrencesUseCase
 import com.example.truecallerassignment.domain.usecase.FetchWebContentUseCase
-import com.example.truecallerassignment.domain.usecase.Find15thCharacterUseCase
-import com.example.truecallerassignment.domain.usecase.FindEvery15thCharacterUseCase
+import com.example.truecallerassignment.domain.usecase.GetCharacterAtPositionUseCase
+import com.example.truecallerassignment.domain.usecase.ExtractCharactersByIntervalUseCase
+import com.truecaller.task.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,13 +29,14 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val fetchWebContentUseCase: FetchWebContentUseCase,
-    private val find15thCharacterUseCase: Find15thCharacterUseCase,
-    private val findEvery15thCharacterUseCase: FindEvery15thCharacterUseCase,
+    private val getCharacterAtPositionUseCase: GetCharacterAtPositionUseCase,
+    private val extractCharactersByIntervalUseCase: ExtractCharactersByIntervalUseCase,
     private val countWordOccurrencesUseCase: CountWordOccurrencesUseCase
 ) : ViewModel() {
 
     companion object {
-        private const val TARGET_URL = "https://www.truecaller.com/blog/life-at-truecaller/life-as-an-android-engineer"
+        private const val TARGET_URL =
+            "https://www.truecaller.com/blog/life-at-truecaller/life-as-an-android-engineer"
     }
 
     // Private mutable state
@@ -46,7 +52,6 @@ class MainViewModel @Inject constructor(
     fun onEvent(event: MainUiEvent) {
         when (event) {
             is MainUiEvent.LoadContent -> loadContentAndProcessTasks()
-            is MainUiEvent.ClearResults -> clearResults()
         }
     }
 
@@ -57,12 +62,12 @@ class MainViewModel @Inject constructor(
     private fun loadContentAndProcessTasks() {
         viewModelScope.launch {
             // Set initial loading state
-            _uiState.update { it.copy(isLoading = true, error = null) }
+            _uiState.update { it.copy(isLoading = true) }
 
             // Fetch web content
             when (val result = fetchWebContentUseCase(TARGET_URL)) {
                 is NetworkResult.Success -> {
-                    val content = result.data.content
+                    val content = result.data
 
                     // Update loading state - content fetched
                     _uiState.update { it.copy(isLoading = false) }
@@ -72,61 +77,64 @@ class MainViewModel @Inject constructor(
 
                     // Task 1: Find 15th character
                     launch {
-                        _uiState.update { it.copy(task1Loading = true) }
-                        val task1Result = find15thCharacterUseCase(content)
-                        _uiState.update {
-                            it.copy(
-                                task1Result = task1Result,
-                                task1Loading = false
-                            )
-                        }
+                        getCharacterAtPosition(content)
                     }
 
                     // Task 2: Find every 15th character
                     launch {
-                        _uiState.update { it.copy(task2Loading = true) }
-                        val task2Result = findEvery15thCharacterUseCase(content)
-                        _uiState.update {
-                            it.copy(
-                                task2Result = task2Result,
-                                task2Loading = false
-                            )
-                        }
+                        getEveryFifteenthCharacters(content)
                     }
 
                     // Task 3: Count word occurrences
                     launch {
-                        _uiState.update { it.copy(task3Loading = true) }
-                        val task3Result = countWordOccurrencesUseCase(content)
-                        _uiState.update {
-                            it.copy(
-                                task3Result = task3Result,
-                                task3Loading = false
-                            )
-                        }
+                        getWordCountOccurences(content)
                     }
                 }
 
                 is NetworkResult.Error -> {
                     _uiState.update {
                         it.copy(
-                            isLoading = false,
-                            error = result.message
+                            isLoading = false, error = result.message
                         )
                     }
-                }
-
-                is NetworkResult.Loading -> {
-                    // Already handled above
                 }
             }
         }
     }
 
-    /**
-     * Clears all results and resets the state
-     */
-    private fun clearResults() {
-        _uiState.update { MainUiState() }
+    private fun getWordCountOccurences(content: String) {
+        val wordCount = countWordOccurrencesUseCase(content)
+        val taskResult = WordFrequencyResult(
+            title = R.string.task3_title,
+            wordCounts = wordCount
+        )
+        updateUiStateTasks(taskResult)
+    }
+
+    private fun getEveryFifteenthCharacters(content: String) {
+        val extractedCharacters = extractCharactersByIntervalUseCase(content, 15)
+        val taskResult = CharactersListResult(
+            title = R.string.task2_title,
+            characters = extractedCharacters
+        )
+        updateUiStateTasks(taskResult)
+    }
+
+    private fun getCharacterAtPosition(content: String) {
+        val charAtPosition =
+            getCharacterAtPositionUseCase(content = content, position = 14)
+        val taskResult = CharacterResult(
+            title = R.string.task1_title,
+            character = charAtPosition
+        )
+        updateUiStateTasks(taskResult)
+    }
+
+    private fun updateUiStateTasks(taskResult: TaskResult) {
+        _uiState.update {
+            it.copy(
+                taskResults = it.taskResults.plus(taskResult),
+            )
+        }
     }
 }

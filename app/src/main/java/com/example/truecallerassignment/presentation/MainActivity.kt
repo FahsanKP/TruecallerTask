@@ -20,13 +20,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TrueCallerAssignmentTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    val navController = rememberNavController()
-                    TruecallerNavigation(navController = navController)
-                }
+                val navController = rememberNavController()
+                TruecallerNavigation(navController = navController)
             }
         }
     }

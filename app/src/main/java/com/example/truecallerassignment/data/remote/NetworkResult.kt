@@ -12,8 +12,6 @@ sealed class NetworkResult<out T> {
         val code: Int? = null,
         val exception: Throwable? = null
     ) : NetworkResult<Nothing>()
-
-    data object Loading : NetworkResult<Nothing>()
 }
 
 enum class ErrorType {

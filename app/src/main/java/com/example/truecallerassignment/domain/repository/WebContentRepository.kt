@@ -1,7 +1,6 @@
 package com.example.truecallerassignment.domain.repository
 
 import com.example.truecallerassignment.data.remote.NetworkResult
-import com.example.truecallerassignment.domain.model.WebContent
 
 /**
  * Repository interface following the Repository pattern
@@ -13,5 +12,5 @@ interface WebContentRepository {
      * @param url The URL to fetch content from
      * @return NetworkResult wrapping the WebContent
      */
-    suspend fun fetchWebContent(url: String): NetworkResult<WebContent>
+    suspend fun fetchWebContent(url: String): NetworkResult<String>
 }
